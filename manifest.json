@@ -1,0 +1,7 @@
+{
+  "name": "Halftone Generator",
+  "id": "1000012087652644703",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html"
+}
