@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Context } from "svgcanvas";
+// import { Context } from "svgcanvas";
 import styles from "./styles.module.scss";
 
 interface Props {
@@ -7,6 +7,7 @@ interface Props {
   params?: {
     amount: number;
   };
+  convertToSVG?: (data) => void;
 }
 
 const Canvas: React.FunctionComponent<Props> = props => {
@@ -19,6 +20,10 @@ const Canvas: React.FunctionComponent<Props> = props => {
   //////////////////////////////////////////////
   ////////////////// HANDLERS //////////////////
   //////////////////////////////////////////////
+
+  // const handleConvertToSVG = data => {
+  //   props.convertToSVG(data);
+  // };
 
   const drawCircle = (ctx, props: { x: number; y: number; size: number }) => {
     ctx.fillStyle = "#000000";
@@ -48,7 +53,7 @@ const Canvas: React.FunctionComponent<Props> = props => {
     canvas.height = canvasSize.height;
 
     const context = canvas.getContext("2d");
-    const c2s = Context(canvasSize.width, canvasSize.height);
+    // const c2s = Context(canvasSize.width, canvasSize.height);
 
     // render(c2s);
     render(context);

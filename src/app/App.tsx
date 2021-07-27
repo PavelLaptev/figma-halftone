@@ -1,24 +1,54 @@
 import * as React from "react";
-import Canvas from "./components/Canvas";
 import Range from "./components/Range";
-// import styles from "./app.module.scss";
+import styles from "./styles.module.scss";
 
 ///////////////////////////////////////////////
 ///////////////// APPLICATION /////////////////
 ///////////////////////////////////////////////
 const App = ({}) => {
   const [config, setConfig] = React.useState({
-    amount: 10
+    amount: 10,
+    radius: 4
   });
 
   //////////////////////////////////////////////
   ////////////////// HANDLERS //////////////////
   //////////////////////////////////////////////
 
-  const getSVG = () => {};
+  const handleAmountChange = value => {
+    setConfig(p => {
+      return { ...p, amount: value };
+    });
+  };
 
-  const handleChange = value => {
-    setConfig({ amount: value });
+  const handleRadiusChange = value => {
+    setConfig(p => {
+      return { ...p, radius: value };
+    });
+  };
+
+  //////////////////////////////////////////////
+  //////////////// FFUNCTIONS //////////////////
+  //////////////////////////////////////////////
+  let initialDot = 1;
+
+  const cloneCircle = amount => {
+    return new Array(amount).fill(0).map((_, i) => {
+      return new Array(amount).fill(0).map((_, j) => {
+        // if (initialDot < config.radius) {
+        initialDot = (initialDot * (i + 1.1)) % config.radius;
+        return (
+          <circle
+            key={`${i}-${j}`}
+            cx={config.radius + config.radius * 4 * i}
+            cy={config.radius + config.radius * 4 * j}
+            r={initialDot}
+            fill="#000"
+          />
+        );
+        // }
+      });
+    });
   };
 
   //////////////////////////////////////////////
@@ -26,16 +56,38 @@ const App = ({}) => {
   //////////////////////////////////////////////
 
   return (
-    <div>
+    <div className={styles.app}>
       <h1>Hello Stats!</h1>
 
-      <Canvas params={config} />
-
       <section>
-        <Range max={50} value={config.amount} onChange={handleChange} />
+        <svg
+          className={styles.svg}
+          width="360"
+          height="360"
+          viewBox="0 0 360 360"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {cloneCircle(config.amount)}
+        </svg>
       </section>
 
-      <button onClick={getSVG}>Get Stats</button>
+      <section>
+        <Range
+          max={10}
+          value={config.radius}
+          label={"Radius"}
+          onChange={handleRadiusChange}
+        />
+        <Range
+          max={20}
+          value={config.amount}
+          label={"Amount"}
+          onChange={handleAmountChange}
+        />
+      </section>
+
+      <button>Get Stats</button>
     </div>
   );
 };
