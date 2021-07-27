@@ -8,7 +8,8 @@ import styles from "./styles.module.scss";
 const App = ({}) => {
   const [config, setConfig] = React.useState({
     amount: 10,
-    radius: 4
+    radius: 4,
+    space: 4
   });
 
   //////////////////////////////////////////////
@@ -27,6 +28,12 @@ const App = ({}) => {
     });
   };
 
+  const handleSpaceChange = value => {
+    setConfig(p => {
+      return { ...p, space: value };
+    });
+  };
+
   //////////////////////////////////////////////
   //////////////// FFUNCTIONS //////////////////
   //////////////////////////////////////////////
@@ -40,8 +47,8 @@ const App = ({}) => {
         return (
           <circle
             key={`${i}-${j}`}
-            cx={config.radius + config.radius * 4 * i}
-            cy={config.radius + config.radius * 4 * j}
+            cx={config.radius + config.space * 4 * i}
+            cy={config.radius + config.space * 4 * j}
             r={initialDot}
             fill="#000"
           />
@@ -78,6 +85,12 @@ const App = ({}) => {
           value={config.radius}
           label={"Radius"}
           onChange={handleRadiusChange}
+        />
+        <Range
+          max={20}
+          value={config.space}
+          label={"Space"}
+          onChange={handleSpaceChange}
         />
         <Range
           max={20}
