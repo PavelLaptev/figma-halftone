@@ -6,6 +6,7 @@ interface Props {
   value?: number;
   max?: number;
   min?: number;
+  step?: number;
   label?: string;
   hideLabel?: boolean;
   onChange?: (value: number) => void;
@@ -28,6 +29,7 @@ const Range: React.FunctionComponent<Props> = props => {
         name={props.label}
         min={props.min}
         max={props.max}
+        step={props.step}
         onChange={handleChange}
       />
     </div>
@@ -39,6 +41,7 @@ Range.defaultProps = {
   value: 50,
   max: 100,
   min: 0,
+  step: 1,
   label: "Label",
   hideLabel: false
 } as Partial<Props>;

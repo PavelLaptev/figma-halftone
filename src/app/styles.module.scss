@@ -1,7 +1,8 @@
 .app {
   position: relative;
+  overflow-x: hidden;
 }
 
 .svg {
-  background: rgba($color: #000000, $alpha: 0.1);
+  transform: rotate(45deg);
 }

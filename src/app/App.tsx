@@ -7,10 +7,15 @@ import styles from "./styles.module.scss";
 ///////////////////////////////////////////////
 const App = ({}) => {
   const [config, setConfig] = React.useState({
-    amount: 10,
-    radius: 4,
-    space: 4
+    ratio: 1,
+    amount: 12
   });
+
+  const circleArea = {
+    radius: 180,
+    x: 180,
+    y: 180
+  };
 
   //////////////////////////////////////////////
   ////////////////// HANDLERS //////////////////
@@ -22,41 +27,84 @@ const App = ({}) => {
     });
   };
 
-  const handleRadiusChange = value => {
+  const handleRatioChange = value => {
     setConfig(p => {
-      return { ...p, radius: value };
-    });
-  };
-
-  const handleSpaceChange = value => {
-    setConfig(p => {
-      return { ...p, space: value };
+      return { ...p, ratio: value };
     });
   };
 
   //////////////////////////////////////////////
   //////////////// FFUNCTIONS //////////////////
   //////////////////////////////////////////////
-  let initialDot = 1;
 
-  const cloneCircle = amount => {
-    return new Array(amount).fill(0).map((_, i) => {
-      return new Array(amount).fill(0).map((_, j) => {
-        // if (initialDot < config.radius) {
-        initialDot = (initialDot * (i + 1.1)) % config.radius;
-        return (
+  const lerp = (x, y, a) => x * (1 - a) + y * a;
+  const reverseOrder = (i, arr) => Math.abs((i % arr.length) - arr.length);
+
+  function isInside(circle_x, circle_y, rad, x, y) {
+    // Compare radius of circle with
+    // distance of its center from
+    // given point
+
+    if (
+      (x - circle_x) * (x - circle_x) + (y - circle_y) * (y - circle_y) <=
+      rad * rad
+    )
+      return true;
+    else return false;
+  }
+
+  const createLine = amount => {
+    let arr = new Array(amount).fill(0);
+    return arr.map((_, i) => {
+      let dotRadius = circleArea.radius / config.amount;
+
+      return arr.map((_, j) => {
+        const calcRadius = () => {
+          if (i < config.amount / 2) {
+            let rad = lerp(2, dotRadius, (i + 1) / 10);
+
+            if (j < config.amount / 2) {
+              return lerp(2, rad, (j + 1) / 10);
+            } else {
+              return lerp(2, rad, reverseOrder(j, arr) / 10);
+            }
+          } else {
+            let rad = lerp(2, dotRadius, reverseOrder(i, arr) / 10);
+
+            if (j < config.amount / 2) {
+              return lerp(2, rad, (j + 1) / 10);
+            } else {
+              return lerp(2, rad, reverseOrder(j, arr) / 10);
+            }
+          }
+        };
+
+        const pos = {
+          radius: Math.round(((calcRadius() * 2) / config.ratio) * 100) / 100,
+          x: dotRadius * 2 * i + dotRadius,
+          y: dotRadius * 2 * j + dotRadius
+        };
+
+        return isInside(
+          circleArea.x,
+          circleArea.y,
+          circleArea.radius,
+          pos.x,
+          pos.y
+        ) ? (
           <circle
-            key={`${i}-${j}`}
-            cx={config.radius + config.space * 4 * i}
-            cy={config.radius + config.space * 4 * j}
-            r={initialDot}
-            fill="#000"
+            key={`${i}${j}`}
+            cx={pos.x}
+            cy={pos.y}
+            r={pos.radius}
+            fill={"rgba(0,0,0,0.5)"}
           />
-        );
-        // }
+        ) : null;
       });
     });
   };
+
+  console.log("---");
 
   //////////////////////////////////////////////
   /////////////////// RENDER ///////////////////
@@ -75,24 +123,27 @@ const App = ({}) => {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {cloneCircle(config.amount)}
+          <g>{createLine(config.amount)}</g>
+          {/* <circle
+            cx={circleArea.x}
+            cy={circleArea.y}
+            r={circleArea.radius}
+            fill="rgba(0,0,0,0.2)"
+          /> */}
         </svg>
       </section>
 
       <section>
         <Range
+          min={1}
           max={10}
-          value={config.radius}
-          label={"Radius"}
-          onChange={handleRadiusChange}
+          value={config.ratio}
+          label={"Ratio"}
+          onChange={handleRatioChange}
         />
         <Range
-          max={20}
-          value={config.space}
-          label={"Space"}
-          onChange={handleSpaceChange}
-        />
-        <Range
+          step={1}
+          min={4}
           max={20}
           value={config.amount}
           label={"Amount"}
