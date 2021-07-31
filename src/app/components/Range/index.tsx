@@ -19,10 +19,11 @@ const Range: React.FunctionComponent<Props> = props => {
 
   return (
     <div className={styles.wrap}>
-      <label htmlFor={props.label}>
-        {props.label}: {props.value}
+      <label className={styles.label} htmlFor={props.label}>
+        {props.label} <span>{props.value}</span>
       </label>
       <input
+        className={styles.range}
         type="range"
         id={props.label}
         value={props.value}

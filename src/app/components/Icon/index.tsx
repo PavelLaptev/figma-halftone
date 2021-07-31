@@ -5,7 +5,7 @@ import icons from "./icons";
 
 interface Props {
   className?: any;
-  name: string;
+  name: "dark-theme" | "light-theme" | null;
 }
 
 const Icon: React.FunctionComponent<Props> = props => {

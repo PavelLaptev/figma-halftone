@@ -2,7 +2,18 @@
 // Please do not change this file!
 interface CssExports {
   app: string;
+  button: string;
+  controlsWrap: string;
+  darkTheme: string;
+  lightTheme: string;
+  menu: string;
+  menu_inactive: string;
+  menu_linearGrBtn: string;
+  menu_radialgrBtn: string;
+  menu_unformGrBtn: string;
+  settings: string;
   svg: string;
+  themeSwitcher: string;
 }
 export const cssExports: CssExports;
 export default cssExports;

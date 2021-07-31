@@ -2,4 +2,41 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.label {
+  color: var(--light-clr);
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  span {
+    opacity: 0.5;
+  }
+}
+
+.range {
+  height: 6px;
+  margin: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  overflow: hidden;
+  cursor: ew-resize;
+  &::-webkit-slider-thumb {
+    width: 10px;
+    -webkit-appearance: none;
+    height: 10px;
+    transition: all 0.2s ease;
+    box-shadow: 200px 0 0 200px var(--dark-middle-clr),
+      -200px 0 0 200px var(--light-clr);
+  }
+  &::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+  }
+  &:hover {
+    &::-webkit-slider-thumb {
+      box-shadow: 200px 0 0 200px var(--dark-light-clr),
+        -200px 0 0 200px var(--light-clr);
+    }
+  }
 }

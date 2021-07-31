@@ -1,8 +1,110 @@
+.lightTheme {
+  --light-clr: var(--root-dark-clr);
+  --dark-clr: var(--root-light-clr);
+  --dark-middle-clr: var(--root-light-middle-clr);
+  --dark-light-clr: var(--root-light-dark-clr);
+}
+
+.darkTheme {
+  --light-clr: var(--root-light-clr);
+  --dark-clr: var(--root-dark-clr);
+  --dark-middle-clr: var(--root-dark-middle-clr);
+  --dark-light-clr: var(--root-dark-light-clr);
+}
+
 .app {
+  display: flex;
+  flex-direction: column;
   position: relative;
   overflow-x: hidden;
+  background-color: var(--dark-clr);
+  height: 100%;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.controlsWrap {
+  position: relative;
+  z-index: 99;
+  padding: 0 20px 20px;
+  background: var(--dark-clr);
+}
+
+.themeSwitcher {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: transparent;
+  opacity: 0.4;
+  &:hover {
+    opacity: 1;
+    background-color: transparent;
+  }
+}
+
+.menu {
+  display: flex;
+  height: 40px;
+  width: 100%;
+  margin: 20px 0;
+  &_inactive {
+    transition: all 0.2s ease;
+    opacity: 0.3;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  &_radialgrBtn {
+    flex: 1;
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      var(--light-clr) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+  &_linearGrBtn {
+    flex: 1;
+    background: linear-gradient(
+      0deg,
+      var(--light-clr) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+  &_unformGrBtn {
+    flex: 1;
+    background: radial-gradient(
+        54.59% 95.68% at 30.64% -45.59%,
+        var(--light-clr) 0%,
+        rgba(255, 255, 255, 0) 100%
+      ),
+      radial-gradient(
+        96.59% 95.68% at 89.64% 83.41%,
+        var(--light-clr) 0%,
+        rgba(255, 255, 255, 0) 100%
+      ),
+      linear-gradient(
+        183deg,
+        var(--light-clr) -114.77%,
+        var(--dark-clr) 24.52%,
+        var(--light-clr) 174.6%,
+        var(--dark-clr) 101.2%
+      );
+  }
+}
+
+.settings {
+  margin: 16px 0;
+}
+
+.button {
+  width: 100%;
 }
 
 .svg {
-  transform: rotate(45deg);
+  margin-left: 20px;
+  margin-top: 20px;
+  pointer-events: none;
+  position: relative;
+  overflow: visible;
 }
