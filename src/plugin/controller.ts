@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////
 
 // Show UI
-figma.showUI(__html__, { width: 260, height: 556 });
+figma.showUI(__html__, { width: 260, height: 600 });
 
 ////////////////////////////////////////////////////////////////
 ///////////////////////// ON MESSAGE ///////////////////////////
@@ -19,12 +19,12 @@ figma.ui.onmessage = async msg => {
   if (msg.type === "SVG-data") {
     const SVGNode = figma.createNodeFromSvg(msg.data as string) as FrameNode;
 
-    if (msg.name === "Radial") {
+    if (msg.name === "radial") {
       SVGNode.children[0].rotation = 45;
       SVGNode.children[0].x = -28;
       SVGNode.children[0].y = 110;
     }
-    if (msg.name === "Linear") {
+    if (msg.name === "linear") {
       SVGNode.children[0].rotation = -90;
       SVGNode.children[0].x = 208;
       SVGNode.children[0].y = 13;

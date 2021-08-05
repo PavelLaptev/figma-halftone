@@ -20,9 +20,16 @@ const circleArea = {
 };
 
 const gradientItems = {
-  radial: "Radial",
-  linear: "Linear",
-  unform: "Unform"
+  radial: "radial",
+  linear: "linear",
+  unform: "unform"
+};
+
+const shapeItems = {
+  circle: "circle",
+  rect: "rectangle",
+  romb: "romb",
+  tri: "triangle"
 };
 
 ///////////////////////////////////////////////
@@ -43,7 +50,12 @@ const App = ({}) => {
 
   const [SVGData, setSVGData] = React.useState(null);
   const [lightTheme, setLightTheme] = React.useState(false);
-  const [activeMenu, setActiveMenu] = React.useState(gradientItems.radial);
+  const [activeGradientMenu, setActiveGradientMenu] = React.useState(
+    gradientItems.radial
+  );
+  const [activeShapeMenu, setActiveShapeMenu] = React.useState(
+    shapeItems.circle
+  );
 
   //////////////////////////////////////////////
   ////////////////// HANDLERS //////////////////
@@ -73,8 +85,12 @@ const App = ({}) => {
     });
   };
 
-  const handleMenuItem = e => {
-    setActiveMenu(e.target.id);
+  const handleGradientMenuItem = e => {
+    setActiveGradientMenu(e.target.id);
+  };
+
+  const handleShapeMenuItem = e => {
+    setActiveShapeMenu(e.target.id);
   };
 
   const sendSVGdata = () => {
@@ -82,7 +98,7 @@ const App = ({}) => {
       {
         pluginMessage: {
           type: "SVG-data",
-          name: activeMenu,
+          name: activeGradientMenu,
           flatten: config.flatten,
           data: ReactDOMServer.renderToString(SVGData)
         }
@@ -94,11 +110,63 @@ const App = ({}) => {
   React.useEffect(() => {
     let SVGData = createSVG();
     setSVGData(SVGData);
-  }, [config, activeMenu]);
+  }, [config, activeGradientMenu, activeShapeMenu]);
 
   //////////////////////////////////////////////
   //////////// PRE-RENDER FUNCTIONS ////////////
   //////////////////////////////////////////////
+
+  const addShape = (pos, i, j) => {
+    if (activeShapeMenu === shapeItems.circle) {
+      return (
+        <circle
+          key={`${i}${j}`}
+          cx={pos.x}
+          cy={pos.y}
+          r={pos.radius}
+          fill={"var(--light-clr)"}
+        />
+      );
+    }
+
+    if (activeShapeMenu === shapeItems.rect) {
+      return (
+        <rect
+          key={`${i}${j}`}
+          x={pos.x - pos.radius}
+          y={pos.y - pos.radius}
+          width={pos.radius * 2}
+          height={pos.radius * 2}
+          fill={"var(--light-clr)"}
+        />
+      );
+    }
+
+    // if (activeShapeMenu === shapeItems.romb) {
+    //   return (
+    //     <rect
+    //       key={`${i}${j}`}
+    //       x={pos.x - pos.radius / 2}
+    //       y={pos.y - pos.radius / 2}
+    //       width={pos.radius}
+    //       height={pos.radius}
+    //       transform={`rotate(45 ${circleArea.radius} ${circleArea.radius})`}
+    //       fill={"var(--light-clr)"}
+    //     />
+    //   );
+    // }
+
+    if (activeShapeMenu === shapeItems.tri) {
+      return (
+        <path
+          key={`${i}${j}`}
+          transform={`translate(${pos.x - pos.radius} ${pos.y - pos.radius})`}
+          d={`M${pos.radius} 0L${pos.radius * 2} ${pos.radius * 2}H0Z`}
+          fill={"var(--light-clr)"}
+        />
+      );
+    }
+  };
 
   const createRadialGradient = amount => {
     let arr = new Array(amount).fill(0);
@@ -141,15 +209,9 @@ const App = ({}) => {
           circleArea.radius,
           pos.x,
           pos.y
-        ) ? (
-          <circle
-            key={`${i}${j}`}
-            cx={pos.x}
-            cy={pos.y}
-            r={pos.radius}
-            fill={"var(--light-clr)"}
-          />
-        ) : null;
+        )
+          ? addShape(pos, i, j)
+          : null;
       });
     });
   };
@@ -168,15 +230,7 @@ const App = ({}) => {
           y: dotRadius * 2 * j + dotRadius
         };
 
-        return (
-          <circle
-            key={`${i}${j}`}
-            cx={pos.x}
-            cy={pos.y}
-            r={pos.radius}
-            fill={"var(--light-clr)"}
-          />
-        );
+        return addShape(pos, i, j);
       });
     });
   };
@@ -195,35 +249,27 @@ const App = ({}) => {
           y: dotRadius * 2 * j + dotRadius
         };
 
-        return (
-          <circle
-            key={`${i}${j}`}
-            cx={pos.x}
-            cy={pos.y}
-            r={pos.radius}
-            fill={"var(--light-clr)"}
-          />
-        );
+        return addShape(pos, i, j);
       });
     });
   };
 
   const createSelectedGradient = () => {
-    if (activeMenu === gradientItems.radial) {
+    if (activeGradientMenu === gradientItems.radial) {
       return (
         <g style={{ transform: "rotate(45deg)", transformOrigin: "center" }}>
           {createRadialGradient(config.amount)}
         </g>
       );
     }
-    if (activeMenu === gradientItems.linear) {
+    if (activeGradientMenu === gradientItems.linear) {
       return (
         <g style={{ transform: "rotate(90deg)", transformOrigin: "center" }}>
           {createLinearGradient(config.amount)}
         </g>
       );
     }
-    if (activeMenu === gradientItems.unform) {
+    if (activeGradientMenu === gradientItems.unform) {
       return <g>{createUnformedGradient(config.amount)}</g>;
     }
   };
@@ -275,7 +321,9 @@ const App = ({}) => {
             max={10}
             value={config.ratio}
             label={
-              activeMenu !== gradientItems.unform ? "Radius ratio" : "Seed"
+              activeGradientMenu !== gradientItems.unform
+                ? "Radius ratio"
+                : "Seed"
             }
             onChange={handleRatioChange}
           />
@@ -291,26 +339,111 @@ const App = ({}) => {
 
         <section className={styles.menu}>
           <div
-            onClick={handleMenuItem}
+            onClick={handleGradientMenuItem}
             id={gradientItems.radial}
-            className={`${styles.menu_radialgrBtn} ${
-              activeMenu === gradientItems.radial ? "" : styles.menu_inactive
+            className={`${styles.menu_item} ${styles.menu_radialGrBtn} ${
+              activeGradientMenu === gradientItems.radial
+                ? ""
+                : styles.menu_inactive
             }`}
           />
           <div
-            onClick={handleMenuItem}
+            onClick={handleGradientMenuItem}
             id={gradientItems.linear}
-            className={`${styles.menu_linearGrBtn} ${
-              activeMenu === gradientItems.linear ? "" : styles.menu_inactive
+            className={`${styles.menu_item} ${styles.menu_linearGrBtn} ${
+              activeGradientMenu === gradientItems.linear
+                ? ""
+                : styles.menu_inactive
             }`}
           />
           <div
-            onClick={handleMenuItem}
+            onClick={handleGradientMenuItem}
             id={gradientItems.unform}
-            className={`${styles.menu_unformGrBtn} ${
-              activeMenu === gradientItems.unform ? "" : styles.menu_inactive
+            className={`${styles.menu_item} ${styles.menu_unformGrBtn} ${
+              activeGradientMenu === gradientItems.unform
+                ? ""
+                : styles.menu_inactive
             }`}
           />
+        </section>
+
+        <section className={styles.menu}>
+          <div
+            onClick={handleShapeMenuItem}
+            id={shapeItems.circle}
+            className={`${styles.menu_item} ${
+              activeShapeMenu === shapeItems.circle ? "" : styles.menu_inactive
+            }`}
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className={styles.menu_shape}
+            >
+              <circle cx="8" cy="8" r="8" />
+            </svg>
+          </div>
+
+          <div
+            onClick={handleShapeMenuItem}
+            id={shapeItems.rect}
+            className={`${styles.menu_item} ${
+              activeShapeMenu === shapeItems.rect ? "" : styles.menu_inactive
+            }`}
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className={styles.menu_shape}
+            >
+              <rect width="14" height="14" />
+            </svg>
+          </div>
+
+          {/* <div
+            onClick={handleShapeMenuItem}
+            id={shapeItems.romb}
+            className={`${styles.menu_item} ${
+              activeShapeMenu === shapeItems.romb ? "" : styles.menu_inactive
+            }`}
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ transform: "rotate(45deg)" }}
+              className={styles.menu_shape}
+            >
+              <rect width="14" height="14" />
+            </svg>
+          </div> */}
+
+          <div
+            onClick={handleShapeMenuItem}
+            id={shapeItems.tri}
+            className={`${styles.menu_item} ${
+              activeShapeMenu === shapeItems.tri ? "" : styles.menu_inactive
+            }`}
+          >
+            <svg
+              width="17"
+              height="14"
+              viewBox="0 0 17 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className={styles.menu_shape}
+            >
+              <path d="M8.5 0L17 14H0L8.5 0Z" />
+            </svg>
+          </div>
         </section>
 
         <Checkbox

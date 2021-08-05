@@ -8,8 +8,10 @@ interface CssExports {
   lightTheme: string;
   menu: string;
   menu_inactive: string;
+  menu_item: string;
   menu_linearGrBtn: string;
-  menu_radialgrBtn: string;
+  menu_radialGrBtn: string;
+  menu_shape: string;
   menu_unformGrBtn: string;
   settings: string;
   svg: string;
