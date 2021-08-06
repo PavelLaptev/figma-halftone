@@ -216,7 +216,10 @@ const App = ({}) => {
         const pos = {
           radius: Math.round(((i + equab * 2) / config.ratio) * 100) / 100,
           x: dotRadius * 2 * i + dotRadius,
-          y: dotRadius * 2 * j + dotRadius
+          y:
+            i % 2 == 0
+              ? dotRadius * 2 * j + dotRadius * 1.5
+              : dotRadius * 2 * j + dotRadius / 2
         };
 
         return addShape(pos, i, j);
