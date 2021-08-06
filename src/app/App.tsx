@@ -118,15 +118,7 @@ const App = ({}) => {
 
   const addShape = (pos, i, j) => {
     if (activeShapeMenu === shapeItems.circle) {
-      return (
-        <circle
-          key={`${i}${j}`}
-          cx={pos.x}
-          cy={pos.y}
-          r={pos.radius}
-          fill={"var(--light-clr)"}
-        />
-      );
+      return <circle key={`${i}${j}`} cx={pos.x} cy={pos.y} r={pos.radius} />;
     }
 
     if (activeShapeMenu === shapeItems.rect) {
@@ -137,7 +129,6 @@ const App = ({}) => {
           y={pos.y - pos.radius}
           width={pos.radius * 2}
           height={pos.radius * 2}
-          fill={"var(--light-clr)"}
         />
       );
     }
@@ -151,7 +142,6 @@ const App = ({}) => {
     //       width={pos.radius}
     //       height={pos.radius}
     //       transform={`rotate(45 ${circleArea.radius} ${circleArea.radius})`}
-    //       fill={"var(--light-clr)"}
     //     />
     //   );
     // }
@@ -162,7 +152,6 @@ const App = ({}) => {
           key={`${i}${j}`}
           transform={`translate(${pos.x - pos.radius} ${pos.y - pos.radius})`}
           d={`M${pos.radius} 0L${pos.radius * 2} ${pos.radius * 2}H0Z`}
-          fill={"var(--light-clr)"}
         />
       );
     }
@@ -281,8 +270,8 @@ const App = ({}) => {
         width={frameSizeWidth}
         height={frameSizeWidth}
         viewBox={`0 0 ${frameSizeWidth} ${frameSizeWidth}`}
-        fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        fill={"var(--light-clr)"}
       >
         {createSelectedGradient()}
       </svg>
