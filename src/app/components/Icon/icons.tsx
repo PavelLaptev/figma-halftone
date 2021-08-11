@@ -14,6 +14,21 @@ const icons = {
       />
     </>
   ),
+  fold: (
+    <>
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M17 3H3V17H17V3ZM15 5H5L5 15H15V5Z"
+        fill={iconcolor}
+      />
+    </>
+  ),
+  unfold: (
+    <>
+      <rect x="3" y="9" width="14" height="2" fill={iconcolor} />
+    </>
+  ),
   "light-theme": (
     <>
       <path

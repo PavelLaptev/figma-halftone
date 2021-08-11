@@ -16,6 +16,14 @@ let s4 = () => {
 };
 
 figma.ui.onmessage = async msg => {
+  if (msg.type === "fold") {
+    if (msg.toggle) {
+      figma.ui.resize(100, 30);
+    } else {
+      figma.ui.resize(260, 600);
+    }
+  }
+
   if (msg.type === "SVG-data") {
     const SVGNode = figma.createNodeFromSvg(msg.data as string) as FrameNode;
 

@@ -49,6 +49,7 @@ const App = ({}) => {
   });
 
   const [SVGData, setSVGData] = React.useState(null);
+  const [fold, setFold] = React.useState(false);
   const [lightTheme, setLightTheme] = React.useState(false);
   const [activeGradientMenu, setActiveGradientMenu] = React.useState(
     gradientItems.radial
@@ -60,6 +61,20 @@ const App = ({}) => {
   //////////////////////////////////////////////
   ////////////////// HANDLERS //////////////////
   //////////////////////////////////////////////
+
+  const handleFold = () => {
+    setFold(!fold);
+
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "fold",
+          toggle: !fold
+        }
+      },
+      "*"
+    );
+  };
 
   const handleAmountChange = value => {
     setConfig(p => {
@@ -291,11 +306,18 @@ const App = ({}) => {
         lightTheme ? styles.lightTheme : styles.darkTheme
       }`}
     >
-      <Button
-        icon={lightTheme ? "light-theme" : "dark-theme"}
-        className={styles.themeSwitcher}
-        onClick={() => setLightTheme(!lightTheme)}
-      />
+      <section className={styles.topButtons}>
+        <Button
+          icon={lightTheme ? "light-theme" : "dark-theme"}
+          className={styles.topButton}
+          onClick={() => setLightTheme(!lightTheme)}
+        />
+        <Button
+          icon={fold ? "fold" : "unfold"}
+          className={styles.topButton}
+          onClick={() => handleFold()}
+        />
+      </section>
 
       <section>{SVGData}</section>
 

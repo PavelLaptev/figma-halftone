@@ -31,10 +31,14 @@
   background: var(--dark-clr);
 }
 
-.themeSwitcher {
+.topButtons {
   position: absolute;
   top: 2px;
   right: 2px;
+  display: flex;
+}
+
+.topButton {
   background-color: transparent;
   opacity: 0.4;
   &:hover {

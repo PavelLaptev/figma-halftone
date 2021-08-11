@@ -15,7 +15,8 @@ interface CssExports {
   menu_unformGrBtn: string;
   settings: string;
   svg: string;
-  themeSwitcher: string;
+  topButton: string;
+  topButtons: string;
 }
 export const cssExports: CssExports;
 export default cssExports;
