@@ -50,7 +50,7 @@ const App = ({}) => {
 
   const [SVGData, setSVGData] = React.useState(null);
   const [fold, setFold] = React.useState(false);
-  const [lightTheme, setLightTheme] = React.useState(false);
+  // const [lightTheme, setLightTheme] = React.useState(false);
   const [activeGradientMenu, setActiveGradientMenu] = React.useState(
     gradientItems.radial
   );
@@ -301,17 +301,13 @@ const App = ({}) => {
   //////////////////////////////////////////////
 
   return (
-    <div
-      className={`${styles.app} ${
-        lightTheme ? styles.lightTheme : styles.darkTheme
-      }`}
-    >
+    <div className={`${styles.app} ${styles.darkTheme}`}>
       <section className={styles.topButtons}>
-        <Button
+        {/* <Button
           icon={lightTheme ? "light-theme" : "dark-theme"}
           className={styles.topButton}
           onClick={() => setLightTheme(!lightTheme)}
-        />
+        /> */}
         <Button
           icon={fold ? "fold" : "unfold"}
           className={styles.topButton}
